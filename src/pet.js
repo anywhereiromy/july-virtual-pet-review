@@ -7,8 +7,15 @@ function Pet(name) {
     this.growUp = function() {
         this.age += 1;
         this.hunger += 5;
-        this.fitness -= 3;
+        this.fitness -= 3;};
+    this.walk = function () {
+        if ((this.fitness + 4) <= 10 ) {
+            this.fitness += 4;
+          } else {
+            this.fitness = 10;
+          }
+        }
 };
-}
+
 
 module.exports = Pet;
