@@ -21,6 +21,17 @@ function Pet(name) {
         }else{
             this.hunger = 0;
         }
+    };
+    this.checkUp = function () {
+        if (this.fitness <= 3 && this.hunger >= 5) {
+            return 'I am hungry AND I need a walk';
+        }else if (this.fitness > 3 && this.hunger < 5) {
+            return 'I feel great!';
+        }else if (this.fitness <= 3) {
+            return 'I need a walk';
+        }else{
+            return 'I am hungry';
+        }
     }
 };
 
