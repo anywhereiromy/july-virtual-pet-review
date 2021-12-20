@@ -92,7 +92,6 @@ describe('checkUp', () => {
     pet.checkUp();
 
     expect(pet.checkUp()).toEqual('I am hungry AND I need a walk');
-    expect(pet.checkUp()).toEqual('I am hungry AND I need a walk');
   });
 
   it(`return 'I feel great!' if neither of the above is true`, () => {
@@ -103,6 +102,28 @@ describe('checkUp', () => {
     pet.checkUp();
 
     expect(pet.checkUp()).toEqual('I feel great!');
-    expect(pet.checkUp()).toEqual('I feel great!');
   });
+});
+
+describe('isAlive', () => {
+
+  it('return true if age less than 30, hunger less than 10 and fitness more than 0', () => {
+    const pet = new Pet('fido');
+
+    pet.hunger = 5;
+    pet.fitness = 5;
+    pet.age = 23;
+
+    expect(pet.isAlive).toEqual(true);
+  });  
+
+  it('otherwise, return false', () => {
+    const pet = new Pet('fido');
+
+    pet.hunger = 12;
+    pet.fitness = 5;
+    pet.age = 23;
+
+    expect(pet.isAlive).toEqual(false);
+  });  
 });
