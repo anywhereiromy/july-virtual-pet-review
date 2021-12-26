@@ -1,95 +1,128 @@
 const { Pet } = require ('../pet.js');
 
+const ERROR_MESSAGE = 'Your pet is no longer alive :(';
+
 let fido;
 beforeEach(() => {
     fido = new Pet('Fido');
 });
 
-describe ('constructor/prototype', () => {
+describe ('Pet', () => {
 
-  test ('returns an object', () => {
-    expect (new Pet('Fido')).toBeInstanceOf(Object);
+  test('Returns an instance of Pet', () => {
+    expect(fido).toBeInstanceOf(Pet);
   });
 
-  test ('sets the name property', () => {
-    //act
-    const pet = new Pet('Fido');
-    //assertion
-    expect (pet.name).toEqual ('Fido');
+  test('Returns the pets name', () => {
+    expect(fido.name).toBe('Fido');
   });
+});
 
+describe ('growUp', () => {
+  
   test ('has an initial age of 0', () => {
-    //act
-    const pet = new Pet('Fido');
-    //assertion
-    expect (pet.age).toEqual (0);
+    expect (fido.age).toEqual (0);
    });
 
    test ('increments the age by 1', () => {
-     //arange
-     const pet = new Pet('Fido');
-     //act
-     pet.growUp();
-     //assertion
-     expect (pet.age).toEqual (1);
-   });
+    fido.growUp();
+    expect (fido.age).toEqual (1);
+  });
+  
+  test ('has an initial hunger of 0', () => {
+    expect (fido.hunger).toEqual (0);
+  })
 
-   test ('increments the hunger by 5', () => {
-    //arrange
-    const pet = new Pet('Fido');
-    //act
-    pet.growUp();
-    //assertion
-    expect (pet.hunger).toEqual (5);
+  test ('increments the hunger by 5', () => {
+    fido.growUp();
+    expect (fido.hunger).toEqual (5);
+  });
+
+  test ('has an initial fitness of 10', () => {
+    expect (fido.fitness).toEqual (10);
   });
 
   test ('decrements the fitness by 3', () => {
-    //arrange
-    const pet = new Pet('Fido');
-    //act
-    pet.growUp();
-    //assertion
-    expect (pet.fitness).toEqual (7);
+    fido.growUp();
+    expect (fido.fitness).toEqual (7);
   });
 
-  test ('increments the fitness by 4', () => {
-    //arrange
-    const pet = new Pet('Fido');
-    pet.fitness = 8;
-    //act
-    pet.walk();
-    //assertion
-    expect (pet.fitness).toEqual (10);
-  })
+  test(`growUp should throw error: "${ERROR_MESSAGE}"`, () => {
+    fido.age = 30;
+    expect(fido.isAlive).toBe(false);
+    expect(() => {
+        fido.growUp();
+    }).toThrowError(new Error(ERROR_MESSAGE));
+  });
+});
+  
+describe ('walk', () => {
+  test('fitness property can not go above 10', () => {
+    expect(fido.fitness).toBe(10);
+    fido.walk();
+    expect(fido.fitness).toBe(10);
+  });
 
+  test('walk increases the fitness property by 4', () => {
+    fido.fitness = 5;
+    fido.walk();
+    expect(fido.fitness).toBe(9);
+  });
+  
+  test(`walk should throw error: "${ERROR_MESSAGE}"`, () => {
+    fido.fitness = 0;
+    expect(fido.isAlive).toBe(false);
+    expect(() => {
+        fido.walk();
+    }).toThrowError(new Error(ERROR_MESSAGE));
+  });
+});
+   
+describe ('feed', () => {
   test ('decrements the hunger by 3', () => {
-    //arrange
-    const pet = new Pet('Fido');
-    pet.hunger = 2;
-    //act
-    pet.feed();
-    //assertion
-    expect (pet.hunger).toEqual (0);
-  })
+    fido.hunger = 2;
+    fido.feed();
+    expect (fido.hunger).toEqual (0);
+  });
 });
 
 describe ('checkUp', () => {
   test('Return "I need a walk" if fitness is 3 or less', () => {
     fido.fitness = 3;
     expect(fido.checkUp()).toEqual('I need a walk');
-});
+  });
 
   test('Return "I am hungry" if hunger is 5 or more', () => {
     fido.hunger = 6;
     expect(fido.checkUp()).toEqual('I am hungry');
-});
+  });
 
   test('Return "I am hungry AND I need a walk" if hunger is 5 or more AND fitness is 3 or less', () => {
     fido.fitness = 2;
     fido.hunger = 6;
     expect(fido.checkUp()).toEqual('I am hungry AND I need a walk');
+  });
+  test('Return "I feel great!" if none of the above are true', () => {
+    expect(fido.checkUp()).toEqual('I feel great!');
+   });
 });
-test('Return "I feel great!" if none of the above are true', () => {
-  expect(fido.checkUp()).toEqual('I feel great!');
+
+describe ('isAlive', () => {
+  test('Return false if fitness is 0 or less', () => {
+    fido.fitness = 0;
+    expect(fido.isAlive).toBe(false);
+  });
+
+  test('Return false if hunger is 10 or more', () => {
+    fido.hunger = 10;
+    expect(fido.isAlive).toBe(false);
+  });
+
+  test('Return false if age is 30 or more', () => {
+    fido.age = 30;
+    expect(fido.isAlive).toBe(false);
+  });
+  test('Return true if none of the above are true', () => {
+    expect(fido.isAlive).toBe(true);
+  });
 });
-})
