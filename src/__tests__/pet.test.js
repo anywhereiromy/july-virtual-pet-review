@@ -1,5 +1,10 @@
 const { Pet } = require ('../pet.js');
 
+let fido;
+beforeEach(() => {
+    fido = new Pet('Fido');
+});
+
 describe ('constructor/prototype', () => {
 
   test ('returns an object', () => {
@@ -67,3 +72,24 @@ describe ('constructor/prototype', () => {
     expect (pet.hunger).toEqual (0);
   })
 });
+
+describe ('checkUp', () => {
+  test('Return "I need a walk" if fitness is 3 or less', () => {
+    fido.fitness = 3;
+    expect(fido.checkUp()).toEqual('I need a walk');
+});
+
+  test('Return "I am hungry" if hunger is 5 or more', () => {
+    fido.hunger = 6;
+    expect(fido.checkUp()).toEqual('I am hungry');
+});
+
+  test('Return "I am hungry AND I need a walk" if hunger is 5 or more AND fitness is 3 or less', () => {
+    fido.fitness = 2;
+    fido.hunger = 6;
+    expect(fido.checkUp()).toEqual('I am hungry AND I need a walk');
+});
+test('Return "I feel great!" if none of the above are true', () => {
+  expect(fido.checkUp()).toEqual('I feel great!');
+});
+})
