@@ -57,18 +57,18 @@ describe ('growUp', () => {
 });
   
 describe ('walk', () => {
-  test('fitness property can not go above 10', () => {
-    expect(fido.fitness).toBe(10);
+  test('fitness cannot go above 10', () => {
+    fido.fitness = 10;
     fido.walk();
     expect(fido.fitness).toBe(10);
   });
 
-  test('walk increases the fitness property by 4', () => {
+  test('increments the fitness property by 4', () => {
     fido.fitness = 5;
     fido.walk();
     expect(fido.fitness).toBe(9);
   });
-  
+
   test(`walk should throw error: "${ERROR_MESSAGE}"`, () => {
     fido.fitness = 0;
     expect(fido.isAlive).toBe(false);
@@ -79,50 +79,90 @@ describe ('walk', () => {
 });
    
 describe ('feed', () => {
-  test ('decrements the hunger by 3', () => {
+
+  test ('hunger cannot go under 0', () => {
     fido.hunger = 2;
     fido.feed();
-    expect (fido.hunger).toEqual (0);
+    expect (fido.hunger).toEqual(0);
+  });
+
+  test ('decrements the hunger by 3', () => {
+    fido.hunger = 4;
+    fido.feed();
+    expect (fido.hunger).toEqual (1);
+  });
+
+  test(`feed should throw error: "${ERROR_MESSAGE}"`, () => {
+    fido.fitness = 0;
+    expect(fido.isAlive).toBe(false);
+    expect(() => {
+        fido.feed();
+    }).toThrowError(new Error(ERROR_MESSAGE));
   });
 });
 
 describe ('checkUp', () => {
-  test('Return "I need a walk" if fitness is 3 or less', () => {
+  test('return "I need a walk" if fitness is 3 or less', () => {
     fido.fitness = 3;
     expect(fido.checkUp()).toEqual('I need a walk');
   });
 
-  test('Return "I am hungry" if hunger is 5 or more', () => {
+  test('return "I am hungry" if hunger is 5 or more', () => {
     fido.hunger = 6;
     expect(fido.checkUp()).toEqual('I am hungry');
   });
 
-  test('Return "I am hungry AND I need a walk" if hunger is 5 or more AND fitness is 3 or less', () => {
+  test('return "I am hungry AND I need a walk" if hunger is 5 or more AND fitness is 3 or less', () => {
     fido.fitness = 2;
     fido.hunger = 6;
     expect(fido.checkUp()).toEqual('I am hungry AND I need a walk');
   });
-  test('Return "I feel great!" if none of the above are true', () => {
+  test('return "I feel great!" if none of the above are true', () => {
     expect(fido.checkUp()).toEqual('I feel great!');
    });
 });
 
 describe ('isAlive', () => {
-  test('Return false if fitness is 0 or less', () => {
+  test('return false if fitness is 0 or less', () => {
     fido.fitness = 0;
     expect(fido.isAlive).toBe(false);
   });
 
-  test('Return false if hunger is 10 or more', () => {
+  test('return false if hunger is 10 or more', () => {
     fido.hunger = 10;
     expect(fido.isAlive).toBe(false);
   });
 
-  test('Return false if age is 30 or more', () => {
+  test('return false if age is 30 or more', () => {
     fido.age = 30;
     expect(fido.isAlive).toBe(false);
   });
-  test('Return true if none of the above are true', () => {
+  test('return true if none of the above are true', () => {
     expect(fido.isAlive).toBe(true);
+  });
+});
+
+describe ('haveBaby', () => {
+
+  test('creates a child pet from inside its parent pet', () => {
+    const parent = new Pet ('Tee');
+    parent.haveBaby('Mo');
+    expect(parent.children).toBeInstanceOf(Array);
+  });
+});
+
+describe ('adoptChild', () => {
+
+  let parent;
+  let child;
+
+  beforeEach(() => {
+    parent = new Pet("Fido");
+    child = new Pet("Fido Jnr");
+  });
+
+  test("takes another object and adds it to the children property", () => {
+    parent.adoptChild(child);
+    expect(parent.children).toBeInstanceOf(Array);
   });
 });

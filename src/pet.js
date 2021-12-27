@@ -18,6 +18,7 @@ class Pet {
         this.age = vPet.minAge;
         this.hunger = vPet.minHunger;
         this.fitness = vPet.maxFitness;
+        this.children = [];
     }
 
     get isAlive () {
@@ -66,10 +67,20 @@ class Pet {
         }
         return 'I feel great!';
     }
+//to create the pet from inside another pet
+    haveBaby(babyName) {
+        if (!this.isAlive) throw new Error (vPet.errorMessage);
+
+        const child = new Pet (babyName);
+        this.children.push(child);
+    }
+//to use dependency injection to create a child pet
+    adoptChild(child) {
+        if (!this.isAlive) throw new Error (vPet.errorMessage);
+
+        this.children.push(child);
+    }
 }
-
-
-
 
 
 module.exports = { Pet };
