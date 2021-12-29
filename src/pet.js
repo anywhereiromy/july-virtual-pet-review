@@ -6,11 +6,8 @@ const vPet = {
     maxHunger: 10,
     minFitness: 0,
     maxFitness: 10,
-    fitnessThreshold: 3,
-    hungerThreshold: 5,
     errorMessage: 'Your pet is no longer alive :('
 }
-
 
 class Pet {
     constructor (name) {
